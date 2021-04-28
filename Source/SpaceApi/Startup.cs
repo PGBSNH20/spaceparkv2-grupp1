@@ -30,15 +30,12 @@ namespace SpaceApi
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1" });
-            });
-            services.AddDbContext<SpaceContext>(o => o.UseSqlServer("SpaceDatabase"));
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1" }); });
+            services.AddDbContext<SpaceContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpaceDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpaceContext context)
         {
             if (env.IsDevelopment())
             {
@@ -53,10 +50,11 @@ namespace SpaceApi
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            context.Database.Migrate();
+
+
         }
     }
 }
