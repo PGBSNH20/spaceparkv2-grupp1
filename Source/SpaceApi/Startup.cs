@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SpaceApi.Models;
 
 namespace SpaceApi
 {
@@ -32,6 +34,7 @@ namespace SpaceApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1" });
             });
+            services.AddDbContext<SpaceContext>(o => o.UseSqlServer("SpaceDatabase"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
