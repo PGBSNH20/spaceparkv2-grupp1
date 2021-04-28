@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  spaceapi:
+    image: ${DOCKER_REGISTRY-}spaceapi
+    build:
+      context: .
+      dockerfile: SpaceApi/Dockerfile
+
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    ports:
+      - "41433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "verystrong!pass123"
+      MSSQL_PID: Express
+    volumes:
+      - dbVolume:/var/opt/mssql
+volumes:
+  dbVolume:
+    driver: local
