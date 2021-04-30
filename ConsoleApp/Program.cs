@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Logic.SpacePark;
+using SpaceApi.Models;
 
 namespace ConsoleApp
 {
@@ -21,6 +24,9 @@ namespace ConsoleApp
                 switch (selectedOption)
                 {
                     case 0:
+                       Task<Parking> park = SpaceParkApi.GetParking(1);
+                       var s = park.Result;
+
                         //if (Occupation.AllParksOccupied()) break;
                         ////var ship = starship.SelectShip();
                         //if (ship == null) break;
