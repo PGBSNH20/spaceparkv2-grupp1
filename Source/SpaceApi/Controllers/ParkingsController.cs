@@ -72,32 +72,32 @@ namespace SpaceApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Parkings
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Parking>> PostParking(Parking parking)
-        //{
-        //    _context.Parkings.Add(parking);
-        //    await _context.SaveChangesAsync();
+        //POST: api/Parkings
+        //To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Parking>> PostParking(Parking parking)
+        {
+            _context.Parkings.Add(parking);
+            await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
-        //}
+            return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
+        }
 
-        //// DELETE: api/Parkings/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteParking(int id)
-        //{
-        //    var parking = await _context.Parkings.FindAsync(id);
-        //    if (parking == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // DELETE: api/Parkings/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteParking(int id)
+        {
+            var parking = await _context.Parkings.FindAsync(id);
+            if (parking == null)
+            {
+                return NotFound();
+            }
 
-        //    _context.Parkings.Remove(parking);
-        //    await _context.SaveChangesAsync();
+            _context.Parkings.Remove(parking);
+            await _context.SaveChangesAsync();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         private bool ParkingExists(int id)
         {
