@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
-    class StandardMessages
+    public class StandardMessages
     {
          public static void StartMessage()
         {

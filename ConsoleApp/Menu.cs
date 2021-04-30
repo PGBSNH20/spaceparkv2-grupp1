@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
-    class Menu
+    public class Menu
     {
         public static int ShowMenu(string prompt, string[] options)
         {
