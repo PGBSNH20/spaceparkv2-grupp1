@@ -54,7 +54,6 @@ namespace SpaceApi
 
             context.Database.Migrate();
 
-
         }
     }
 }
