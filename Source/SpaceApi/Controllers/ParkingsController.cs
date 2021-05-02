@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Logic.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,12 @@ namespace SpaceApi.Controllers
 
         // GET: api/Parkings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Parking>>> GetParkings()
+        public async Task<ActionResult<SpacePark>> GetParkings()
         {
-            return await _context.Parkings.ToListAsync();
+            return new SpacePark()
+            {
+                SpaceParks = new List<SpacePort> { new() { Parkings = await _context.Parkings.ToListAsync(), PortName = "Test1" }, new() { Parkings = await _context.Parkings.ToListAsync(), PortName = "Test2" } }
+            };
         }
 
         // GET: api/Parkings/5

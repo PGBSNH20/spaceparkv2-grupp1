@@ -24,8 +24,8 @@ namespace ConsoleApp
                 switch (selectedOption)
                 {
                     case 0:
-                       Task<Parking> park = SpaceParkApi.GetParking(1);
-                       var s = park.Result;
+                        var park = SpaceParkApi.GetAllParkings();
+                        Console.WriteLine(park.Result);
 
                         //if (Occupation.AllParksOccupied()) break;
                         ////var ship = starship.SelectShip();
