@@ -28,6 +28,9 @@ namespace SpaceApi.Controllers
             var ports = _context.SpacePorts.Include(i => i.Parkings);
             List<SpacePort> tempList = await ports.ToListAsync();
 
+            if (tempList.Count == 0)
+                return NoContent();
+
             return new SpacePark { SpaceParks = tempList };
         }
 
@@ -79,10 +82,18 @@ namespace SpaceApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Parking>> PostParking(Parking parking)
         {
-            await _context.Parkings.AddAsync(parking);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Parkings.AddAsync(parking);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
+                return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
         }
 
         // DELETE: api/Parkings/5
