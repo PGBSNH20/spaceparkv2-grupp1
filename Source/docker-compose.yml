@@ -3,10 +3,16 @@ version: '3.4'
 services:
   spaceapi:
     image: ${DOCKER_REGISTRY-}spaceapi
+    ports:
+     - 80:80
+     - 443:443
     build:
       context: .
       dockerfile: SpaceApi/Dockerfile
-
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:443;http://+:80
+        - ASPNETCORE_HTTPS_PORT="443"
   sql-server:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     ports:
