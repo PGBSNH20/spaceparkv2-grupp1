@@ -24,11 +24,11 @@ namespace ConsoleApp
                 switch (selectedOption)
                 {
                     case 0:
-                        var park = SpaceParkApi.GetAllParkings();
-                        Console.WriteLine(park.Result);
+                        var park = SpaceParkApi.GetAllParkings(); // FOr testing
+                        Console.WriteLine(park.Result); // TODO Replace all database calls with API calls in code.
 
                         //if (Occupation.AllParksOccupied()) break;
-                        ////var ship = starship.SelectShip();
+                        //var ship = starship.SelectShip();
                         //if (ship == null) break;
                         ////parking.Park(ship);
                         break;
