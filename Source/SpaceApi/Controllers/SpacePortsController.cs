@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -29,11 +30,11 @@ namespace SpaceApi.Controllers
 
         // GET: api/SpacePorts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SpacePort>> GetSpacePort(int id)
+        public async Task<ActionResult<IEnumerable<SpacePort>>> GetSpacePort(int id)
         {
-            var spacePort = await _context.SpacePorts.FindAsync(id);
+            var spacePort = await _context.SpacePorts.Where(i => i.Id == id).Include(p => p.Parkings).ToListAsync();
 
-            if (spacePort == null)
+            if (spacePort.Count == 0)
             {
                 return NotFound();
             }
@@ -63,10 +64,8 @@ namespace SpaceApi.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -77,7 +76,7 @@ namespace SpaceApi.Controllers
         [HttpPost]
         public async Task<ActionResult<SpacePort>> PostSpacePort(SpacePort spacePort)
         {
-            _context.SpacePorts.Add(spacePort);
+            await _context.SpacePorts.AddAsync(spacePort);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSpacePort", new { id = spacePort.Id }, spacePort);

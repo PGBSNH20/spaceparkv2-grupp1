@@ -20,15 +20,9 @@ namespace SpaceApi.Controllers
 
         // GET: api/Parkings
         [HttpGet]
-        public async Task<ActionResult<SpacePark>> GetParkings()
+        public async Task<ActionResult<IEnumerable<Parking>>> GetParkings()
         {
-            var ports = _context.SpacePorts.Include(i => i.Parkings);
-            List<SpacePort> tempList = await ports.ToListAsync();
-
-            if (tempList.Count == 0)
-                return NoContent();
-
-            return new SpacePark { SpaceParks = tempList };
+            return await _context.Parkings.ToListAsync();
         }
 
         // GET: api/Parkings/5
