@@ -1,7 +1,8 @@
 # Documentation
 
+## SpacePark API
 
-### Parking API
+### Parking Endpoint
 ![image](https://user-images.githubusercontent.com/58253756/116851400-94187c00-abf2-11eb-87c3-45ab11fc3552.png)
 
 ### Parking Schema
