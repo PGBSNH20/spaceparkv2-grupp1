@@ -11,6 +11,7 @@ namespace SpaceApi.Models
     }
     public class SpacePort
     {
+        public int Id { get; set; }
         public string PortName { get; set; }
         public List<Parking> Parkings { get; set; }
     }

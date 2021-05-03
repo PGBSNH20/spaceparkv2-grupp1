@@ -25,10 +25,10 @@ namespace SpaceApi.Controllers
         [HttpGet]
         public async Task<ActionResult<SpacePark>> GetParkings()
         {
-            return new SpacePark()
-            {
-                SpaceParks = new List<SpacePort> { new() { Parkings = await _context.Parkings.ToListAsync(), PortName = "Test1" }, new() { Parkings = await _context.Parkings.ToListAsync(), PortName = "Test2" } }
-            };
+            var ports = _context.SpacePorts.Include(i => i.Parkings);
+            List<SpacePort> tempList = await ports.ToListAsync();
+
+            return new SpacePark { SpaceParks = tempList };
         }
 
         // GET: api/Parkings/5
@@ -67,10 +67,8 @@ namespace SpaceApi.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -81,7 +79,7 @@ namespace SpaceApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Parking>> PostParking(Parking parking)
         {
-            _context.Parkings.Add(parking);
+            await _context.Parkings.AddAsync(parking);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
