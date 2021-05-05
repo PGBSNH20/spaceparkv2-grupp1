@@ -40,11 +40,37 @@ namespace Logic.SpacePark
             var response = await client.GetAsync<List<SpacePort>>(request);
             return response;
         }
-        public IRestResponse PutParking(Parking parking)
+        public IRestResponse Park(Parking parking) // Update existing parking - Used for parking a ship, can also be used to remove a ship
         {
             var client = new RestClient("https://localhost/api/");
             var request = new RestRequest("parkings/" + parking.Id, Method.PUT);
             request.AddJsonBody(parking);
+            return client.Execute(request);
+        }
+        public IRestResponse AddSpacePort(SpacePort spacePort)
+        {
+            var client = new RestClient("https://localhost/api/");
+            var request = new RestRequest("spaceports/", Method.POST);
+            request.AddJsonBody(spacePort);
+            return client.Execute(request);
+        }
+        public IRestResponse RemoveSpacePort(SpacePort spacePort)
+        {
+            var client = new RestClient("https://localhost/api/");
+            var request = new RestRequest("spaceports/" + spacePort.Id, Method.DELETE);
+            return client.Execute(request);
+        }
+        private IRestResponse AddParking(Parking parking)
+        {
+            var client = new RestClient("https://localhost/api/");
+            var request = new RestRequest("parkings/", Method.POST);
+            request.AddJsonBody(parking);
+            return client.Execute(request);
+        }
+        private IRestResponse RemoveParking(Parking parking)
+        {
+            var client = new RestClient("https://localhost/api/");
+            var request = new RestRequest("parkings/" + parking.Id, Method.DELETE);
             return client.Execute(request);
         }
 

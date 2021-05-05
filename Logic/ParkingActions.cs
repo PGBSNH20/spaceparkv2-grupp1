@@ -47,7 +47,7 @@ namespace Logic
                     park.Occupied = true;
                     park.ShipName = ship.Name;
                     park.ParkedBy = ship.Driver;
-                    var result = spaceApi.PutParking(park);
+                    var result = spaceApi.Park(park);
                     if (result.IsSuccessful)
                     {
                         Console.WriteLine("Parked");
