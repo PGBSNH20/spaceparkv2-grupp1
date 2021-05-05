@@ -1,6 +1,7 @@
 # Documentation
 
 ## SpacePark API
+Our API runs by default against port 443 (https default)
 
 ### Parking Endpoint
 | Endpoint              | Method | Description                                                                | Response codes                                                   |
