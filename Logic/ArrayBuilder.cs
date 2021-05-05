@@ -28,6 +28,17 @@ namespace Logic
             string[] parks = tempList.ToArray();
             return parks;
         }
+
+        public static string[] PortArray(Task<List<SpacePort>> ports)
+        {
+            var tempList = new List<string>();
+            for (int i = 0; i < ports.Result.Count; i++)
+            {
+                tempList.Add($"{ports.Result[i].PortName}");
+            }
+            string[] parks = tempList.ToArray();
+            return parks;
+        }
         public static string[] OnLeaveArray(Task<List<Parking>> parkings)
         {
             var tempList = new List<string>();

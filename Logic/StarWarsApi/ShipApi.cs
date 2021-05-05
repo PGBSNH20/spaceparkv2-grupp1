@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleApp;
 using Logic.Models;
+using Logic.SpacePark;
 using RestSharp;
 
 namespace Logic.StarWarsApi // Todo replace database call with api call
 {
-    class ShipApi
+   public  class ShipApi
     {
         public async Task<Starship> GetStarships(string address) // Get all starships from API
         {
@@ -43,7 +44,7 @@ namespace Logic.StarWarsApi // Todo replace database call with api call
                     {
                         ownShips.Add(CreateTask(s).Result); // Run API request to get each ship and put in list
                     }
-                    // ownShips = RemoveParkedShips(ownShips); // Remove ships if they are already parked in the database.
+                    ownShips = RemoveParkedShips(ownShips); // Remove ships if they are already parked in the database.
 
                     if (ownShips.Count != 0)
                     {
@@ -62,21 +63,22 @@ namespace Logic.StarWarsApi // Todo replace database call with api call
             StandardMessages.NotAllowedMessage(); // If the user does not exist in the API
             return null;
         }
-        //private static List<Starship> RemoveParkedShips(List<Starship> ownShips) // Remove ships if they are already parked in the database.
-        //{
-        //    //using var context = new SpaceContext();
-        //    //var parkedShips = context.Parkings.Where(p => p.Occupied).ToList();
-        //    //for (int i = 0; i < parkedShips.Count; i++)
-        //    //{
-        //    //    var name = parkedShips[i].ShipName;
-        //    //    if (ownShips.Any(n => n.Name == name))
-        //    //    {
-        //    //        var index = ownShips.First(s => s.Name == name);
-        //    //        ownShips.Remove(index);
-        //    //    }
-        //    //}
-        //    //return ownShips;
-        //}
+        private static List<Starship> RemoveParkedShips(List<Starship> ownShips) // Remove ships if they are already parked in the database.
+        {
+            var parkings = new SpaceParkApi();
+            var parkingList = parkings.GetAllParkings();
+            var parkedShips = parkingList.Result.Where(p => p.Occupied).ToList();
+            for (int i = 0; i < parkedShips.Count; i++)
+            {
+                var name = parkedShips[i].ShipName;
+                if (ownShips.Any(n => n.Name == name))
+                {
+                    var index = ownShips.First(s => s.Name == name);
+                    ownShips.Remove(index);
+                }
+            }
+            return ownShips;
+        }
         public IEnumerable<string> GetShipNumber(IEnumerable<string> shipsAddresses) // Extract the ship number from URL.
         {
             return from s in shipsAddresses let index = s.TrimEnd('/').LastIndexOf('/') select s.Substring(index + 1);

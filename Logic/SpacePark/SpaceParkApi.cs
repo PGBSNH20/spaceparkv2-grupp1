@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Logic.Models;
+using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using SpaceApi.Models;
 
@@ -10,19 +11,41 @@ namespace Logic.SpacePark
 {
     public class SpaceParkApi
     {
-        public static async Task<Parking> GetParking(int id) // Return the specfied parking lot
+        public async Task<Parking> GetParkingById(int id) // Return the specfied parking lot
         {
             var client = new RestClient("https://localhost/api/");
-            var request = new RestRequest($"Parkings/{id}", DataFormat.Json);
+            var request = new RestRequest($"parkings/{id}", DataFormat.Json);
             var response = await client.GetAsync<Parking>(request);
             return response;
         }
-        public static async Task<List<Parking>> GetAllParkings() // Return a list of all parkings
+        public async Task<List<Parking>> GetParkingByPortName(string portName) // Return the specfied parking lot
         {
             var client = new RestClient("https://localhost/api/");
-            var request = new RestRequest("Parkings/", DataFormat.Json);
+            var request = new RestRequest($"parkings?portname={portName}", DataFormat.Json);
             var response = await client.GetAsync<List<Parking>>(request);
             return response;
+        }
+        public async Task<List<Parking>> GetAllParkings() // Return a list of all parkings
+        {
+            var client = new RestClient("https://localhost/api/");
+            var request = new RestRequest("parkings/", DataFormat.Json);
+            var response = await client.GetAsync<List<Parking>>(request);
+            return response;
+        }
+
+        public async Task<List<SpacePort>> GetAllSpacePorts()
+        {
+            var client = new RestClient("https://localhost/api/");
+            var request = new RestRequest("spaceports/", DataFormat.Json);
+            var response = await client.GetAsync<List<SpacePort>>(request);
+            return response;
+        }
+        public IRestResponse PutParking(Parking parking)
+        {
+            var client = new RestClient("https://localhost/api/");
+            var request = new RestRequest("parkings/" + parking.Id, Method.PUT);
+            request.AddJsonBody(parking);
+            return client.Execute(request);
         }
 
     }
