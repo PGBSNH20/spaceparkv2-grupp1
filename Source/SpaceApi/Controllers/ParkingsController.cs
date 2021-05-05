@@ -24,8 +24,11 @@ namespace SpaceApi.Controllers
         {
             if (portName != null)
             {
-                return await _context.SpacePorts.Where(p => p.PortName == portName).Include(i => i.Parkings)
+                var list = await _context.SpacePorts.Where(p => p.PortName == portName).Include(i => i.Parkings)
                     .SelectMany(t => t.Parkings).ToListAsync();
+                if (list.Count == 0)
+                    return NotFound();
+                return list;
             }
             return await _context.Parkings.ToListAsync();
         }
