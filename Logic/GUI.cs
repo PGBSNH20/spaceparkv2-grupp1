@@ -40,6 +40,12 @@ namespace Logic
                 case 1:
                     RemoveSpacePark();
                     break;
+                case 2:
+                    AddParking();
+                    break;
+                case 3:
+                    RemoveParking();
+                    break;
                 default:
                     break;
             }
@@ -55,6 +61,7 @@ namespace Logic
         }
         private void RemoveSpacePark()
         {
+            Console.Clear();
             var spaceApi = new SpaceParkApi();
             List<SpacePort> spacePorts = spaceApi.GetAllSpacePorts().Result;
             List<string> nameList = new List<string>();
@@ -66,5 +73,56 @@ namespace Logic
             int selectedOption = Menu.ShowMenu("Select space port to remove", nameList);
             spaceApi.RemoveSpacePort(spacePorts[selectedOption]);
         }
+        private void AddParking()
+        {
+            Console.Clear();
+            var spaceApi = new SpaceParkApi();
+            List<SpacePort> spacePorts = spaceApi.GetAllSpacePorts().Result;
+            List<string> nameList = new List<string>();
+            foreach (var port in spacePorts)
+            {
+                nameList.Add(port.PortName);
+            }
+            int selectedOption = Menu.ShowMenu("Choose space port", nameList);
+            Console.Clear();
+            Console.WriteLine($"Add a new parking to {nameList[selectedOption]}");
+            Console.Write("\nEnter parking fee: ");
+            int fee = int.Parse(Console.ReadLine());
+            Console.Write("\nEnter max ship length:");
+            decimal length = decimal.Parse(Console.ReadLine());
+            Parking parking = new Parking
+            {
+                Fee = fee,
+                MaxLength = length,
+                Occupied = false,
+                ParkedBy = null,
+                ShipName = null,
+                SpacePortId = spacePorts[selectedOption].Id
+            };
+            spaceApi.AddParking(parking);
+        }
+
+        private void RemoveParking()
+        {
+            Console.Clear(); 
+            var spaceApi = new SpaceParkApi();
+            List<SpacePort> spacePorts = spaceApi.GetAllSpacePorts().Result;
+            List<string> nameList = new List<string>();
+            foreach (var port in spacePorts)
+            {
+                nameList.Add(port.PortName);
+            }
+            int selectedOption = Menu.ShowMenu("Choose space port", nameList);
+            Console.Clear();
+            var parkings = spaceApi.GetParkingByPortName(nameList[selectedOption]).Result;
+            nameList.Clear();
+            foreach(var park in parkings)
+            {
+                nameList.Add($"Parking nr.{park.Id} | Fee - {park.Fee} credits | Max length - {park.MaxLength}m | Occupied - {park.Occupied}");
+            }
+            selectedOption = Menu.ShowMenu($"Choose parking to remove ", nameList);
+            spaceApi.RemoveParking(parkings[selectedOption]);
+        }
     }
+
 }

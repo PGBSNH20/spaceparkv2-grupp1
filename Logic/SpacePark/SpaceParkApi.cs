@@ -60,14 +60,14 @@ namespace Logic.SpacePark
             var request = new RestRequest("spaceports/" + spacePort.Id, Method.DELETE);
             return client.Execute(request);
         }
-        private IRestResponse AddParking(Parking parking)
+        public IRestResponse AddParking(Parking parking)
         {
             var client = new RestClient("https://localhost/api/");
             var request = new RestRequest("parkings/", Method.POST);
             request.AddJsonBody(parking);
             return client.Execute(request);
         }
-        private IRestResponse RemoveParking(Parking parking)
+        public IRestResponse RemoveParking(Parking parking)
         {
             var client = new RestClient("https://localhost/api/");
             var request = new RestRequest("parkings/" + parking.Id, Method.DELETE);
