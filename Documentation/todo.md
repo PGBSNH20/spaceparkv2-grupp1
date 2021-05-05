@@ -8,6 +8,7 @@
 - [ ] Add parking history
 - [x] Add API key
 - [x] Add Docker support
+- [ ] Access starwars api via our api
 
 
 #### Console
