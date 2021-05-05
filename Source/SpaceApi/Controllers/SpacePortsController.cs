@@ -76,10 +76,18 @@ namespace SpaceApi.Controllers
         [HttpPost]
         public async Task<ActionResult<SpacePort>> PostSpacePort(SpacePort spacePort)
         {
-            await _context.SpacePorts.AddAsync(spacePort);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SpacePorts.AddAsync(spacePort);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSpacePort", new { id = spacePort.Id }, spacePort);
+                return CreatedAtAction("GetSpacePort", new { id = spacePort.Id }, spacePort);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            
         }
 
         // DELETE: api/SpacePorts/5
