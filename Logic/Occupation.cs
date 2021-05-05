@@ -20,11 +20,11 @@ namespace Logic
             StandardMessages.FullParkMessage();
             return true;
         }
-        public static bool ParkIsOccupied(Task<List<Parking>> parkings, int index) // Check if specific park is occupied
+        public static bool ParkIsOccupied(List<Parking> parkings, int index) // Check if specific park is occupied
         {
             var api = new SpaceParkApi();
             var parkingsList = api.GetAllParkings();
-            var park = parkingsList.Result.First(p => p.Id == parkings.Result[index].Id);
+            var park = parkingsList.Result.First(p => p.Id == parkings[index].Id);
             return park.Occupied;
         }
     }

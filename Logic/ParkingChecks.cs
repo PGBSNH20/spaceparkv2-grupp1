@@ -18,9 +18,9 @@ namespace Logic
             List<Parking> list = parkingList.OrderBy(i => i.Id).ToList();
             return list;
         }
-        public bool SizeTooBig(Task<List<Parking>> parkings, int index, Starship ship)
+        public bool SizeTooBig(List<Parking> parkings, int index, Starship ship)
         {
-            return ship.Length > parkings.Result[index].MaxLength;
+            return ship.Length > parkings[index].MaxLength;
         }
     }
 }

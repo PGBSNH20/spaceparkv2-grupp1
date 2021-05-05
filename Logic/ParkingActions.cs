@@ -12,18 +12,18 @@ namespace Logic
 {
     public class ParkingActions
     {
-        public void Park(Starship ship, string portName)
+        public void Park(Starship ship, SpacePort portName)
         {
             var parkingCheck = new ParkingChecks();
             StandardMessages.LoadingMessage();
-            var parkings = parkingCheck.ParkingLots(portName);
-            var array = ArrayBuilder.ParkArray(parkings); // Create string array of all parkings to present to the user in the menu
+            var parkings = parkingCheck.ParkingLots(portName.PortName).Result;
+            /*var array = ArrayBuilder.ParkArray(parkings); */// Create string array of all parkings to present to the user in the menu
             Console.Clear();
-            var selectedOption = Menu.ShowMenu($"You have selected to park {ship.Name}. Choose parking spot", array);
+            var selectedOption = Menu.ShowMenu($"You have selected to park {ship.Name}. Choose parking spot", parkings);
 
             Finish(parkings, selectedOption, ship); // Add ship to parking in database
         }
-        private static void Finish(Task<List<Parking>> parkings, int index, Starship ship) // Final check before adding to database
+        private static void Finish(List<Parking> parkings, int index, Starship ship) // Final check before adding to database
         {
             var spaceApi = new SpaceParkApi();
             var parkingCheck = new ParkingChecks();
@@ -43,7 +43,7 @@ namespace Logic
                 {
                     Console.Clear();
                     Console.WriteLine("Parking..");
-                    var park = parkings.Result.First(p => p.Id == parkings.Result[index].Id);
+                    var park = parkings.First(p => p.Id == parkings[index].Id);
                     park.Occupied = true;
                     park.ShipName = ship.Name;
                     park.ParkedBy = ship.Driver;

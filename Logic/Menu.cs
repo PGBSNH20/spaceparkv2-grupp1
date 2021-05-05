@@ -8,7 +8,7 @@ namespace ConsoleApp
 {
     public class Menu
     {
-        public static int ShowMenu(string prompt, string[] options)
+        public static int ShowMenu<T>(string prompt, List<T> options)
         {
             Console.WriteLine(prompt);
 
@@ -24,11 +24,11 @@ namespace ConsoleApp
                 if (key != null)
                 {
                     Console.CursorLeft = 0;
-                    Console.CursorTop -= options.Length;
+                    Console.CursorTop -= options.Count;
                 }
 
                 // Print all the options, highlighting the selected one.
-                for (int i = 0; i < options.Length; i++)
+                for (int i = 0; i < options.Count; i++)
                 {
                     var option = options[i];
                     if (i == selected)
@@ -44,7 +44,7 @@ namespace ConsoleApp
                 key = Console.ReadKey().Key;
                 selected = key switch
                 {
-                    ConsoleKey.DownArrow => Math.Min(selected + 1, options.Length - 1),
+                    ConsoleKey.DownArrow => Math.Min(selected + 1, options.Count - 1),
                     ConsoleKey.UpArrow => Math.Max(selected - 1, 0),
                     _ => selected
                 };

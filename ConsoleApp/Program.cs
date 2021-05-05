@@ -1,9 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Logic;
-using Logic.SpacePark;
 using Logic.StarWarsApi;
-using SpaceApi.Models;
 
 namespace ConsoleApp
 {
@@ -19,11 +16,12 @@ namespace ConsoleApp
             while (running)
             {
                 StandardMessages.StartMessage();
-                var selectedOption = Menu.ShowMenu("SpacePark Menu", new[]
+                var selectedOption = Menu.ShowMenu("SpacePark Menu", new List<string>
                 {
                     "Park Ship",
                     "Leave SpacePark",
                     "Show Receipts",
+                    "Admin Page",
                     "Exit Menu"
                 });
                 switch (selectedOption)
@@ -49,6 +47,9 @@ namespace ConsoleApp
                         //payment.Receipts();
                         break;
                     case 3:
+                        gui.AdminPanel();
+                        break;
+                    case 4:
                         running = false;
                         break;
                 }

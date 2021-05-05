@@ -48,8 +48,8 @@ namespace Logic.StarWarsApi // Todo replace database call with api call
 
                     if (ownShips.Count != 0)
                     {
-                        var array = ArrayBuilder.ShipArray(ownShips); // Build an array of the ships from the list to present to the user in the menu.
-                        var selectedOption = Menu.ShowMenu($"Welcome {name}. What ship will you be parking today?\n", array);
+                        /*var array = ArrayBuilder.ShipArray(ownShips);*/ // Build an array of the ships from the list to present to the user in the menu.
+                        var selectedOption = Menu.ShowMenu($"Welcome {name}. What ship will you be parking today?\n", ownShips);
 
                         ownShips[selectedOption].Driver = name; // Assign the name to the driver property of the selected ship.
                         return ownShips[selectedOption];
