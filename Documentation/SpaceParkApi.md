@@ -14,3 +14,12 @@
 
 ### Parking Schema
 ![image](https://user-images.githubusercontent.com/58253756/116851473-b0b4b400-abf2-11eb-8bc4-d03eec248877.png)
+
+### Spaceport Endpoint
+| Endpoint          | Method | Description                                          | Response codes                                                   |
+|-------------------|--------|------------------------------------------------------|------------------------------------------------------------------|
+| api/spaceports    | GET    | Returns all spaceports and their respective parkings | 200 (Success)   204 (No content)                                 |
+| api/soaceports/id | GET    | Return the specified parking using unique id         | 200 (Success) 404 (Not found)                                    |
+| api/spaceports    | POST   | Adds a new space port                                | 200 (Success) 400 (Bad request)                                  |
+| api/spaceports/id | PUT    | Updates the specified spaceport                      | 200 (Success) 204 (No content) 400 (Bad request) 404 (Not found) |
+| api/spaceports/id | DELETE | Deletes the specified parking                        | 200 (Success) 204 (No content) 404 (Not found)                   |
