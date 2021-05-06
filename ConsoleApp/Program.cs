@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Logic;
 
-namespace ConsoleApp
+namespace Logic
 {
     class Program
     {
@@ -10,6 +9,8 @@ namespace ConsoleApp
         {
             var gui = new GUI();
             var parking = new ParkingActions();
+            var leave = new LeaveParkingActions();
+            var payment = new PaymentActions();
 
             var running = true;
             while (running)
@@ -26,25 +27,21 @@ namespace ConsoleApp
                 switch (selectedOption)
                 {
                     case 0:
+                        if (Occupation.AllParksOccupied()) break;
                         var spacePort = gui.SelectSpacePort();
                         var ship = GUI.GetStarship();
                         if (ship == null) break;
-
                         parking.Park(ship, spacePort);
-
-                        //if (Occupation.AllParksOccupied()) break;
-                        //var ship = starship.SelectShip();
-                        //if (ship == null) break;
-                        ////parking.Park(ship);
                         break;
                     case 1:
-                        //leave.LeavePark();
+                        var port = gui.SelectSpacePort();
+                        leave.LeavePark(port);
                         break;
                     case 2:
-                        //payment.Receipts();
+                        payment.Receipts();
                         break;
                     case 3:
-                       // gui.AdminPanel();
+                       gui.AdminPanel();
                         break;
                     case 4:
                         running = false;

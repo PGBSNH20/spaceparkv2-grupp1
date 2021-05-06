@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp
+namespace Logic
 {
     public class StandardMessages
     {
@@ -59,13 +59,6 @@ namespace ConsoleApp
             Console.WriteLine("Enter name: ");
             return Console.ReadLine();
         }
-
-        //public static void AllShipsParked()
-        //{
-        //    Console.Clear();
-        //    Console.WriteLine("Sorry, all your ships are already parked.");
-        //    Console.ReadKey();
-        //}
 
         public static void NoShipsAvailableMessage()
         {

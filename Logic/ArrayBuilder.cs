@@ -36,7 +36,7 @@ namespace Logic
            
             return portList;
         }
-        public static string[] OnLeaveArray(Task<List<Parking>> parkings)
+        public static List<string> OnLeaveArray(Task<List<Parking>> parkings)
         {
             var tempList = new List<string>();
             for (int i = 0; i < parkings.Result.Count; i++)
@@ -45,8 +45,7 @@ namespace Logic
                     ? $"Parking Spot {parkings.Result[i].Id}."
                     : $"Parking Spot {parkings.Result[i].Id}. Occupied by {parkings.Result[i].ShipName}");
             }
-            string[] parks = tempList.ToArray();
-            return parks;
+            return tempList;
         }
     }
 }

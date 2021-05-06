@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ConsoleApp;
 using Logic.SpacePark;
 using SpaceApi.Models;
 
 namespace Logic
 {
-    class Occupation
+    public class Occupation
     {
         public static bool AllParksOccupied() // Check if all parkings are occupied
         {
             var api = new SpaceParkApi();
-
             StandardMessages.LoadingMessage();
             var parkings = api.GetAllParkings();
 

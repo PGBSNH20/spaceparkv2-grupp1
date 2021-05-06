@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ConsoleApp;
 using Logic.SpacePark;
 using RestSharp;
 using SpaceApi.Models;
@@ -122,7 +121,7 @@ namespace Logic
             selectedOption = Menu.ShowMenu($"Choose parking to remove ", nameList);
             spaceApi.RemoveParking(parkings[selectedOption]);
         }
-        public static SpaceApi.Models.Starship GetStarship()
+        public static Starship GetStarship()
         {
             var personName = StandardMessages.NameReader();
             var api = new SpaceParkApi();
@@ -144,8 +143,6 @@ namespace Logic
             return null;
 
         }
-
-
     }
 }
 

@@ -41,5 +41,12 @@ namespace SpaceApi.SWAPI
             }
             return temp;
         }
+        public static Results GetCharacter(string personName)
+        {
+            var personApi = new PersonApi();
+            var apiResult = personApi.GetAllPersons();
+            Results user = apiResult.Result.FirstOrDefault(p => p.Name == personName);
+            return user;
+        }
     }
 }
