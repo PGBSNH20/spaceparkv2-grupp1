@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Logic;
-using Logic.StarWarsApi;
 
 namespace ConsoleApp
 {
@@ -9,7 +9,6 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             var gui = new GUI();
-            var starship = new ShipApi();
             var parking = new ParkingActions();
 
             var running = true;
@@ -27,13 +26,11 @@ namespace ConsoleApp
                 switch (selectedOption)
                 {
                     case 0:
-                        // TODO Replace all database calls with API calls in code.
                         var spacePort = gui.SelectSpacePort();
-                        var ship = starship.SelectShip();
+                        var ship = GUI.GetStarship();
                         if (ship == null) break;
+
                         parking.Park(ship, spacePort);
-
-
 
                         //if (Occupation.AllParksOccupied()) break;
                         //var ship = starship.SelectShip();
@@ -47,7 +44,7 @@ namespace ConsoleApp
                         //payment.Receipts();
                         break;
                     case 3:
-                        gui.AdminPanel();
+                       // gui.AdminPanel();
                         break;
                     case 4:
                         running = false;

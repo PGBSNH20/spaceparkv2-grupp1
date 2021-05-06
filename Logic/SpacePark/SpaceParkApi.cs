@@ -83,6 +83,13 @@ namespace Logic.SpacePark
             var request = new RestRequest("parkings/" + parking.Id, Method.DELETE);
             return client.Execute(request);
         }
-
+        public async Task<List<SpaceApi.Models.Starship>> GetPersonsStarshipsAvailableForParking(string personName)
+        {
+            var client = new RestClient("https://localhost/api/");
+            client.AddDefaultHeader("apikey", "secret1234");
+            var request = new RestRequest($"Spaceships?personName={personName}", DataFormat.Json);
+            var response = await client.GetAsync<List<SpaceApi.Models.Starship>>(request);
+            return response;
+        }
     }
 }

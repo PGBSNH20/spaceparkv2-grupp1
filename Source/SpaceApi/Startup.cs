@@ -50,18 +50,18 @@ namespace SpaceApi
 
             app.UseAuthorization();
 
-            app.Use(async (context, next) =>
-            {
-                var key = Configuration["ApiKey"];
-                if (context.Request.Headers.ContainsKey("apikey") && context.Request.Headers["apikey"].ToString() == key)
-                {
-                    await next();
-                }
-                else
-                {
-                    context.Response.StatusCode = 401;
-                }
-            });
+            //app.Use(async (context, next) =>
+            //{
+            //    var key = Configuration["ApiKey"];
+            //    if (context.Request.Headers.ContainsKey("apikey") && context.Request.Headers["apikey"].ToString() == key)
+            //    {
+            //        await next();
+            //    }
+            //    else
+            //    {
+            //        context.Response.StatusCode = 401;
+            //    }
+            //});
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

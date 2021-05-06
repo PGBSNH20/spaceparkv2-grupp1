@@ -1,14 +1,13 @@
-﻿using System;
+﻿using RestSharp;
+using SpaceApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Logic.Models;
-using RestSharp;
 
-namespace Logic.StarWarsApi
+namespace SpaceApi.SWAPI
 {
-    class PersonApi
+    public class PersonApi
     {
         private static async Task<Person> GetPersonPage(int page) // Get one page from API
         {
