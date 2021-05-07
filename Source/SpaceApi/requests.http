@@ -1,0 +1,7 @@
+GET  http://localhost/api/spaceships?personname=Luke_Skywalker
+###
+GET  http://localhost/api/spaceships?personname=Luke
+// Code 204 no content - if the person have not been a part of a Starwars movie 
+###
+GET  http://localhost/api/spaceships?personname=Owen_Lars
+// Code 200 and empty list - if there are no ships that are available for parking  

@@ -1,14 +1,13 @@
-﻿using System;
+﻿using RestSharp;
+using SpaceApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Logic.Models;
-using RestSharp;
 
-namespace Logic.StarWarsApi
+namespace SpaceApi.SWAPI
 {
-    class PersonApi
+    public class PersonApi
     {
         private static async Task<Person> GetPersonPage(int page) // Get one page from API
         {
@@ -41,6 +40,13 @@ namespace Logic.StarWarsApi
                 temp.AddRange(tasks[i].Result.Results); // Add each page result to list
             }
             return temp;
+        }
+        public static Results GetCharacter(string personName)
+        {
+            var personApi = new PersonApi();
+            var apiResult = personApi.GetAllPersons();
+            Results user = apiResult.Result.FirstOrDefault(p => p.Name == personName);
+            return user;
         }
     }
 }
