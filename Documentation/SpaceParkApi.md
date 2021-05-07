@@ -41,7 +41,7 @@ Our API runs by default against port 443 (https default)
 | Endpoint                  | Method | Description                                                         | Response codes                            |
 |---------------------------|--------|---------------------------------------------------------------------|-------------------------------------------|
 | api/payments?personName   | GET    | Returns all payments made by a person specified in the query field  | 200 (Success) 204 (No content)            |
-| api/payments              | POST   | Adds a new payment to the database                                  |                                           |
+| api/payments              | POST   | Adds a new payment to the database                                  | 200 (Success) 400 (Bad request)           |
 
 ### Payment Schema
 ![Payment](https://user-images.githubusercontent.com/70198472/117456797-e508d700-af48-11eb-9f83-33e5fe3117f0.jpg)
