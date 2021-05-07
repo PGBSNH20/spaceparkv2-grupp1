@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ConsoleApp;
 using Logic.SpacePark;
 using RestSharp;
 using SpaceApi.Models;
@@ -14,9 +13,8 @@ namespace Logic
             Console.Clear();
             var spaceApi = new SpaceParkApi();
             var ports = spaceApi.GetAllSpacePorts().Result;
-            //var arr = ArrayBuilder.PortArray(ports);
-            var selectedOption = Menu.ShowMenu("Select spaceport", ports);
-
+            var arr = ArrayBuilder.PortList(ports);
+            var selectedOption = Menu.ShowMenu("Select spaceport", arr);
             return ports[selectedOption];
         }
 
@@ -65,7 +63,7 @@ namespace Logic
             var spaceApi = new SpaceParkApi();
             List<SpacePort> spacePorts = spaceApi.GetAllSpacePorts().Result;
             List<string> nameList = new List<string>();
-            foreach(var port in spacePorts)
+            foreach (var port in spacePorts)
             {
                 nameList.Add(port.PortName);
             }
@@ -104,7 +102,7 @@ namespace Logic
 
         private void RemoveParking()
         {
-            Console.Clear(); 
+            Console.Clear();
             var spaceApi = new SpaceParkApi();
             List<SpacePort> spacePorts = spaceApi.GetAllSpacePorts().Result;
             List<string> nameList = new List<string>();
@@ -116,13 +114,36 @@ namespace Logic
             Console.Clear();
             var parkings = spaceApi.GetParkingByPortName(nameList[selectedOption]).Result;
             nameList.Clear();
-            foreach(var park in parkings)
+            foreach (var park in parkings)
             {
                 nameList.Add($"Parking nr.{park.Id} | Fee - {park.Fee} credits | Max length - {park.MaxLength}m | Occupied - {park.Occupied}");
             }
             selectedOption = Menu.ShowMenu($"Choose parking to remove ", nameList);
             spaceApi.RemoveParking(parkings[selectedOption]);
         }
-    }
+        public static Starship GetStarship()
+        {
+            var personName = StandardMessages.NameReader();
+            var api = new SpaceParkApi();
+            var ships = api.GetPersonsStarshipsAvailableForParking(personName).Result;
+            if (ships!=null)
+            {
+                if (ships.Count != 0)
+                {
+                    Console.Clear();
+                    var selectedOption = Menu.ShowMenu($"Welcome {personName}. What ship will you be parking today?\n", ArrayBuilder.ShipList(ships));
+                    var selectedShip = ships[selectedOption];
+                    selectedShip.Driver = personName; // Assign the name to the driver property of the selected ship.
+                    return selectedShip;
+                }
+                StandardMessages.NoShipsAvailableMessage(); // If the user does not have any ships or all available ships for the user is already parked
+                return null;
+            }
+            StandardMessages.NotAllowedMessage(); // If the user does not exist in the API
+            return null;
 
+        }
+    }
 }
+
+

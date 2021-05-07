@@ -1,45 +1,42 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Logic.Models;
 using SpaceApi.Models;
 
 namespace Logic
 {
     public class ArrayBuilder
     {
-        public static string[] ParkArray(Task<List<Parking>> parkings)
+        public static List<string> ParkArray(List<Parking> parkings)
         {
             var tempList = new List<string>();
-            for (int i = 0; i < parkings.Result.Count; i++)
+            for (int i = 0; i < parkings.Count; i++)
             {
                 tempList.Add(
-                    $"Parking Spot {parkings.Result[i].Id}. Max ship length: {parkings.Result[i].MaxLength}m. Fee: {parkings.Result[i].Fee} credits. Occupied? {parkings.Result[i].Occupied}");
+                    $"Parking Spot {parkings[i].Id}. Max ship length: {parkings[i].MaxLength}m. Fee: {parkings[i].Fee} credits. Occupied? {parkings[i].Occupied}");
             }
-            string[] parks = tempList.ToArray();
-            return parks;
+            return tempList;
         }
-        public static string[] ShipArray(List<Starship> ship)
+        public static List<string> ShipList(List<Starship> ship)
         {
-            var tempList = new List<string>();
+            var shipsPrint = new List<string>();
             for (int i = 0; i < ship.Count; i++)
             {
-                tempList.Add($"{ship[i].Name} ({ship[i].Length}m)");
+                shipsPrint.Add($"{ship[i].Name} ({ship[i].Length}m)");
             }
-            string[] parks = tempList.ToArray();
-            return parks;
+            return shipsPrint;
         }
 
-        public static string[] PortArray(Task<List<SpacePort>> ports)
+        public static List<string> PortList(List<SpacePort> ports)
         {
-            var tempList = new List<string>();
-            for (int i = 0; i < ports.Result.Count; i++)
+            var portList = new List<string>();
+            for (int i = 0; i < ports.Count; i++)
             {
-                tempList.Add($"{ports.Result[i].PortName}");
+                portList.Add($"{ports[i].PortName}");
             }
-            string[] parks = tempList.ToArray();
-            return parks;
+           
+            return portList;
         }
-        public static string[] OnLeaveArray(Task<List<Parking>> parkings)
+        public static List<string> OnLeaveArray(Task<List<Parking>> parkings)
         {
             var tempList = new List<string>();
             for (int i = 0; i < parkings.Result.Count; i++)
@@ -48,8 +45,7 @@ namespace Logic
                     ? $"Parking Spot {parkings.Result[i].Id}."
                     : $"Parking Spot {parkings.Result[i].Id}. Occupied by {parkings.Result[i].ShipName}");
             }
-            string[] parks = tempList.ToArray();
-            return parks;
+            return tempList;
         }
     }
 }
