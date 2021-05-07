@@ -10,7 +10,7 @@ using SpaceApi.Models;
 
 namespace Logic.SpacePark
 {
-    public class SpaceParkApi
+    public class SpaceParkApi : ISpaceParkApi
     {
         public async Task<Parking> GetParkingById(int id) // Return the specfied parking lot
         {
@@ -36,7 +36,6 @@ namespace Logic.SpacePark
             var response = await client.GetAsync<List<Parking>>(request);
             return response;
         }
-
         public async Task<List<SpacePort>> GetAllSpacePorts()
         {
             var client = new RestClient("https://localhost/api/");
