@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SpaceApi.Models;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace SpaceApi
 {
@@ -60,6 +62,9 @@ namespace SpaceApi
                 else
                 {
                     context.Response.StatusCode = 401;
+                    var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + context.Response.StatusCode  + "}";
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(jsonString, Encoding.UTF8);
                 }
             });
 
