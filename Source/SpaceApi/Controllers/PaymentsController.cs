@@ -27,7 +27,7 @@ namespace SpaceApi.Controllers
                 await _context.Payments.AddAsync(payment);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
+                return Ok();
             }
             catch
             {
