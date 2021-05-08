@@ -11,9 +11,9 @@ namespace SpaceApi.Controllers
     [ApiController]
     public class ParkingsController : ControllerBase
     {
-        private readonly SpaceContext _context;
+        private readonly ISpaceContext _context;
 
-        public ParkingsController(SpaceContext context)
+        public ParkingsController(ISpaceContext context)
         {
             _context = context;
         }
@@ -56,12 +56,12 @@ namespace SpaceApi.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(parking).State = EntityState.Modified;
+            DbContext dBContext = (DbContext)_context;
+            dBContext.Entry(parking).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await dBContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,7 +83,8 @@ namespace SpaceApi.Controllers
             try
             {
                 await _context.Parkings.AddAsync(parking);
-                await _context.SaveChangesAsync();
+                DbContext dBContext = (DbContext)_context;
+                await dBContext.SaveChangesAsync();
 
                 return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
             }
@@ -105,7 +106,8 @@ namespace SpaceApi.Controllers
             }
 
             _context.Parkings.Remove(parking);
-            await _context.SaveChangesAsync();
+            DbContext dBContext = (DbContext)_context;
+            await dBContext.SaveChangesAsync();
 
             return NoContent();
         }

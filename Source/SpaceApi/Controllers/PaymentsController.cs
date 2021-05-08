@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SpaceApi.Models;
 using SpaceApi.SWAPI;
 using System;
@@ -12,9 +13,9 @@ namespace SpaceApi.Controllers
     [ApiController]
     public class PaymentsController : ControllerBase
     {
-        private readonly SpaceContext _context;
+        private readonly ISpaceContext _context;
 
-        public PaymentsController(SpaceContext context)
+        public PaymentsController(ISpaceContext context)
         {
             _context = context;
         }
@@ -25,15 +26,14 @@ namespace SpaceApi.Controllers
             try
             {
                 await _context.Payments.AddAsync(payment);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
+                DbContext dbContext = (DbContext)_context;
+                await dbContext.SaveChangesAsync();
+                return Ok();
             }
             catch
             {
                 return BadRequest();
             }
-
         }
         // GET: api/Payments?personName=R2-D2
         [HttpGet]

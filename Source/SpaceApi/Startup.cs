@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SpaceApi.Models;
+using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace SpaceApi
 {
@@ -32,6 +34,7 @@ namespace SpaceApi
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1" }); });
             services.AddDbContext<SpaceContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpaceDatabase")));
+            services.AddTransient<ISpaceContext, SpaceContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,18 +53,21 @@ namespace SpaceApi
 
             app.UseAuthorization();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    var key = Configuration["ApiKey"];
-            //    if (context.Request.Headers.ContainsKey("apikey") && context.Request.Headers["apikey"].ToString() == key)
-            //    {
-            //        await next();
-            //    }
-            //    else
-            //    {
-            //        context.Response.StatusCode = 401;
-            //    }
-            //});
+            app.Use(async (context, next) =>
+            {
+                var key = Configuration["ApiKey"];
+                if (context.Request.Headers.ContainsKey("apikey") && context.Request.Headers["apikey"].ToString() == key)
+                {
+                    await next();
+                }
+                else
+                {
+                    context.Response.StatusCode = 401;
+                    var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + context.Response.StatusCode + "}";
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(jsonString, Encoding.UTF8);
+                }
+            });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

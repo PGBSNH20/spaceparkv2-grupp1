@@ -10,9 +10,9 @@ namespace SpaceApi.Controllers
     [Route("api/[controller]")]
     public class SpaceshipsController : Controller
     {
-        private readonly SpaceContext _context;
+        private readonly ISpaceContext _context;
 
-        public SpaceshipsController(SpaceContext context)
+        public SpaceshipsController(ISpaceContext context)
         {
             _context = context;
         }
@@ -25,6 +25,5 @@ namespace SpaceApi.Controllers
             starships = ShipApi.GetPersonsStarshipsAvailableForParking(starWarsCharacter, _context);
             return starships;
          }
-        
     }
 }

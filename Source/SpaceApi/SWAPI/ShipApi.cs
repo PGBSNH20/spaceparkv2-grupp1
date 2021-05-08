@@ -21,7 +21,7 @@ namespace SpaceApi.SWAPI
             var shipApi = new ShipApi();
             return await Task.Run(() => shipApi.GetStarships(address));
         }
-        public static List<Starship> GetPersonsStarshipsAvailableForParking(Results person, SpaceContext context)
+        public static List<Starship> GetPersonsStarshipsAvailableForParking(Results person, ISpaceContext context)
         {
             List<string> shipsAddresses = person.Starships; // List the users starship URLs
             if (shipsAddresses.Count != 0)
@@ -38,7 +38,7 @@ namespace SpaceApi.SWAPI
             return new List<Starship> { };
         }
 
-        private static List<Starship> RemoveParkedShips(List<Starship> ownShips, SpaceContext context) // Remove ships if they are already parked in the database.
+        private static List<Starship> RemoveParkedShips(List<Starship> ownShips, ISpaceContext context) // Remove ships if they are already parked in the database.
         {
             var parkedShips = context.Parkings.Where(p => p.Occupied).ToList();
             for (int i = 0; i < parkedShips.Count(); i++)
