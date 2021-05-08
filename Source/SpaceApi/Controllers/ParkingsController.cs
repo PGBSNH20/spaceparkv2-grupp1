@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SpaceApi.Data;
 using SpaceApi.Models;
 
 namespace SpaceApi.Controllers
@@ -12,39 +13,35 @@ namespace SpaceApi.Controllers
     public class ParkingsController : ControllerBase
     {
         private readonly SpaceContext _context;
+        private readonly IParkingDataStore _parkingData;
 
-        public ParkingsController(SpaceContext context)
+        public ParkingsController(IParkingDataStore parkingData)
         {
-            _context = context;
+            _parkingData = parkingData;
         }
 
         // GET: api/Parkings
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Parking>>> GetParkings(string portName)
         {
-            if (portName != null)
-            {
-                var list = await _context.SpacePorts.Where(p => p.PortName == portName).Include(i => i.Parkings)
-                    .SelectMany(t => t.Parkings).ToListAsync();
-                if (list.Count == 0)
-                    return NotFound();
-                return list;
-            }
-            return await _context.Parkings.ToListAsync();
+            var list = _parkingData.GetAllParkings(portName);
+            if (list.Result.Count == 0)
+                return NotFound();
+            return Ok(list.Result);
         }
 
         // GET: api/Parkings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Parking>> GetParking(int id)
         {
-            var parking = await _context.Parkings.FindAsync(id);
+            var parking = _parkingData.GetParkingById(id);
 
             if (parking == null)
             {
                 return NotFound();
             }
 
-            return parking;
+            return Ok(parking.Result);
         }
 
         // PUT: api/Parkings/5
