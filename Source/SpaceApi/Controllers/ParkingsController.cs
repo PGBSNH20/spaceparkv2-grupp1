@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SpaceApi.Data;
 using SpaceApi.Models;
 
 namespace SpaceApi.Controllers
@@ -11,68 +12,52 @@ namespace SpaceApi.Controllers
     [ApiController]
     public class ParkingsController : ControllerBase
     {
-        private readonly SpaceContext _context;
+        private readonly IParkingDataStore _parkingData;
 
-        public ParkingsController(SpaceContext context)
+        public ParkingsController(IParkingDataStore parkingData)
         {
-            _context = context;
+            _parkingData = parkingData;
         }
 
         // GET: api/Parkings
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Parking>>> GetParkings(string portName)
         {
-            if (portName != null)
-            {
-                var list = await _context.SpacePorts.Where(p => p.PortName == portName).Include(i => i.Parkings)
-                    .SelectMany(t => t.Parkings).ToListAsync();
-                if (list.Count == 0)
-                    return NotFound();
-                return list;
-            }
-            return await _context.Parkings.ToListAsync();
+            var list = await _parkingData.GetAllParkings(portName);
+            if (list.Count == 0)
+                return NotFound();
+            return Ok(list);
         }
 
         // GET: api/Parkings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Parking>> GetParking(int id)
         {
-            var parking = await _context.Parkings.FindAsync(id);
+            var parking = await _parkingData.GetParkingById(id);
 
             if (parking == null)
             {
                 return NotFound();
             }
 
-            return parking;
+            return Ok(parking);
         }
 
         // PUT: api/Parkings/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutParking(int id, Parking parking)
         {
-            if (id != parking.Id)
-            {
-                return BadRequest();
-            }
+            var status = await _parkingData.UpdateParking(id, parking);
 
-            _context.Entry(parking).State = EntityState.Modified;
-
-            try
+            if (status.Exception != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParkingExists(id))
-                {
+                if (status.Exception.InnerException.Message == "Id does not match")
+                    return BadRequest();
+                if (status.Exception.InnerException.Message == "Not found")
                     return NotFound();
-                }
-
-                throw;
             }
-
+            if (status.IsCompleted)
+                return Ok();
             return NoContent();
         }
 
@@ -80,39 +65,25 @@ namespace SpaceApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Parking>> PostParking(Parking parking)
         {
-            try
-            {
-                await _context.Parkings.AddAsync(parking);
-                await _context.SaveChangesAsync();
+            var result = await _parkingData.AddParking(parking);
 
-                return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
-            }
-            catch
+            if (result == null)
             {
                 return BadRequest();
             }
 
+            return CreatedAtAction("GetParking", new { id = parking.Id }, parking);
         }
 
         // DELETE: api/Parkings/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParking(int id)
         {
-            var parking = await _context.Parkings.FindAsync(id);
+            var parking = _parkingData.DeleteParking(id);
             if (parking == null)
-            {
                 return NotFound();
-            }
 
-            _context.Parkings.Remove(parking);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ParkingExists(int id)
-        {
-            return _context.Parkings.Any(e => e.Id == id);
+            return Ok();
         }
     }
 }
