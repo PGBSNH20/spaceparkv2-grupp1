@@ -37,6 +37,7 @@ namespace SpaceApi
             services.AddDbContext<SpaceContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpaceDatabase")));
             services.AddScoped<IParkingDataStore, ParkingDataStore>();
             services.AddScoped<IPaymentsDataStore, PaymentsDataStore>();
+            services.AddScoped<ISpacePortDataStore, SpacePortDataStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
