@@ -1,6 +1,7 @@
 using System;
 using Logic.SpacePark;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using SpaceApi.Controllers;
 using SpaceApi.Models;
 using Xunit;
 using static RestSharp.ResponseStatus;
@@ -13,7 +14,7 @@ namespace SpaceApiTests
         public void Getting_All_Parkings_Should_Return_Four()
         {
             ISpaceParkApi api = new SpaceParkApiStub();
-            
+
             var list = api.GetAllParkings();
 
             Assert.Equal(4, list.Result.Count);
@@ -25,7 +26,12 @@ namespace SpaceApiTests
 
             var parking = new Parking
             {
-                Id = 1, Fee = 100, MaxLength = 100, Occupied = true, ParkedBy = "Person", ShipName = "Invector",
+                Id = 1,
+                Fee = 100,
+                MaxLength = 100,
+                Occupied = true,
+                ParkedBy = "Person",
+                ShipName = "Invector",
                 SpacePortId = 1
             };
 

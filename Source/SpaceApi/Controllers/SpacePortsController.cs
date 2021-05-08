@@ -11,9 +11,9 @@ namespace SpaceApi.Controllers
     [ApiController]
     public class SpacePortsController : ControllerBase
     {
-        private readonly SpaceContext _context;
+        private readonly ISpaceContext _context;
 
-        public SpacePortsController(SpaceContext context)
+        public SpacePortsController(ISpaceContext context)
         {
             _context = context;
         }
@@ -49,12 +49,12 @@ namespace SpaceApi.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(spacePort).State = EntityState.Modified;
+            DbContext dBContext = (DbContext)_context;
+            dBContext.Entry(spacePort).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await dBContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,7 +77,8 @@ namespace SpaceApi.Controllers
             try
             {
                 await _context.SpacePorts.AddAsync(spacePort);
-                await _context.SaveChangesAsync();
+                DbContext dBContext = (DbContext)_context;
+                await dBContext.SaveChangesAsync();
 
                 return CreatedAtAction("GetSpacePort", new { id = spacePort.Id }, spacePort);
             }
@@ -99,7 +100,8 @@ namespace SpaceApi.Controllers
             }
 
             _context.SpacePorts.Remove(spacePort);
-            await _context.SaveChangesAsync();
+            DbContext dBContext = (DbContext)_context;
+            await dBContext.SaveChangesAsync();
 
             return NoContent();
         }
