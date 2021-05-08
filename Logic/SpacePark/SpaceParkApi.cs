@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Logic.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using RestSharp;
 using SpaceApi.Models;
 
 namespace Logic.SpacePark
 {
-    public class SpaceParkApi
+    public class SpaceParkApi : ISpaceParkApi
     {
         public async Task<Parking> GetParkingById(int id) // Return the specfied parking lot
         {
@@ -36,7 +31,6 @@ namespace Logic.SpacePark
             var response = await client.GetAsync<List<Parking>>(request);
             return response;
         }
-
         public async Task<List<SpacePort>> GetAllSpacePorts()
         {
             var client = new RestClient("https://localhost/api/");
@@ -83,6 +77,29 @@ namespace Logic.SpacePark
             var request = new RestRequest("parkings/" + parking.Id, Method.DELETE);
             return client.Execute(request);
         }
-
+        public async Task<List<Starship>> GetPersonsStarshipsAvailableForParking(string personName) // Return a list of spaceships that belong to personName and are not yet parked. Return null if personName isn't a part of StarWars movies.  
+        {
+            var client = new RestClient("https://localhost/api/");
+            client.AddDefaultHeader("apikey", "secret1234");
+            var request = new RestRequest($"Spaceships?personName={personName}", DataFormat.Json);
+            var response = await client.GetAsync<List<Starship>>(request);
+            return response;
+        }
+        public IRestResponse AddPay(Payment payment)
+        {
+            var client = new RestClient("https://localhost/api/");
+            client.AddDefaultHeader("apikey", "secret1234");
+            var request = new RestRequest("payments/", Method.POST);
+            request.AddJsonBody(payment);
+            return client.Execute(request);
+        }
+        public async Task<List<Payment>> GetReceipts(string personName)
+        {
+            var client = new RestClient("https://localhost/api/");
+            client.AddDefaultHeader("apikey", "secret1234");
+            var request = new RestRequest($"payments?personName={personName}", DataFormat.Json);
+            var response = await client.GetAsync<List<Payment>>(request);
+            return response;
+        }
     }
 }
