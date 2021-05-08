@@ -16,6 +16,7 @@ using SpaceApi.Models;
 using Microsoft.AspNetCore.Http;
 using System.Text;
 
+
 namespace SpaceApi
 {
     public class Startup
@@ -63,9 +64,11 @@ namespace SpaceApi
                 else
                 {
                     context.Response.StatusCode = 401;
-                    var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + context.Response.StatusCode + "}";
-            context.Response.ContentType = "application/json";
-            await context.Response.WriteAsync(jsonString, Encoding.UTF8);
+
+                    var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + context.Response.StatusCode  + "}";
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(jsonString, Encoding.UTF8);
+
                 }
             });
 
