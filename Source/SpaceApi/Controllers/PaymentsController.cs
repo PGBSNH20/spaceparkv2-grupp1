@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SpaceApi.Data;
 using SpaceApi.Models;
 using SpaceApi.SWAPI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SpaceApi.Controllers
@@ -12,38 +11,33 @@ namespace SpaceApi.Controllers
     [ApiController]
     public class PaymentsController : ControllerBase
     {
-        private readonly SpaceContext _context;
+        private readonly IPaymentsDataStore _paymentData;
 
-        public PaymentsController(SpaceContext context)
+        public PaymentsController(IPaymentsDataStore paymentData)
         {
-            _context = context;
+            _paymentData = paymentData;
         }
         // POST: api/Payments
         [HttpPost]
         public async Task<ActionResult<Payment>> PostPayment(Payment payment)
         {
-            try
-            {
-                await _context.Payments.AddAsync(payment);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
-            }
-            catch
-            {
+            var result = _paymentData.AddPayment(payment);
+            
+            if (result == null)
                 return BadRequest();
-            }
 
+            return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
         }
         // GET: api/Payments?personName=R2-D2
         [HttpGet]
-        public List<Payment> GetPayments(string personName)
+        public async Task<ActionResult<List<Payment>>> GetPayments(string personName)
         {
             Results starWarsCharacter = PersonApi.GetCharacter(personName);
-            if (starWarsCharacter == null) return null;
-            List<Payment> payments = new List<Payment>();
-            payments = _context.Payments.Where(p => p.User == personName).ToList();
-            return payments;
+            if (starWarsCharacter == null) return NotFound();
+            List<Payment> payments = await _paymentData.GetPaymentFromName(personName);
+            if (payments.Count == 0)
+                return NotFound();
+            return Ok(payments);
         }
     }
 }

@@ -36,6 +36,7 @@ namespace SpaceApi
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1" }); });
             services.AddDbContext<SpaceContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpaceDatabase")));
             services.AddScoped<IParkingDataStore, ParkingDataStore>();
+            services.AddScoped<IPaymentsDataStore, PaymentsDataStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
