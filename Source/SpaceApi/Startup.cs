@@ -56,19 +56,19 @@ namespace SpaceApi
 
             app.UseAuthorization();
 
-            app.Use(async (context, next) =>
+            app.Use(async (httpContext, next) =>
             {
                 var key = Configuration["ApiKey"];
-                if (context.Request.Headers.ContainsKey("apikey") && context.Request.Headers["apikey"].ToString() == key)
+                if (httpContext.Request.Headers.ContainsKey("apikey") && httpContext.Request.Headers["apikey"].ToString() == key)
                 {
                     await next();
                 }
                 else
                 {
-                    context.Response.StatusCode = 401;
-                    var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + context.Response.StatusCode + "}";
-                    context.Response.ContentType = "application/json";
-                    await context.Response.WriteAsync(jsonString, Encoding.UTF8);
+                    httpContext.Response.StatusCode = 401;
+                    var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + httpContext.Response.StatusCode + "}";
+                    httpContext.Response.ContentType = "application/json";
+                    await httpContext.Response.WriteAsync(jsonString, Encoding.UTF8);
                 }
             });
 
