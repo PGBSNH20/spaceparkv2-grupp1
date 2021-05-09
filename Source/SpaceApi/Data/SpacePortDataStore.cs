@@ -20,9 +20,9 @@ namespace SpaceApi.Data
         {
             return await _context.SpacePorts.OrderBy(i => i.Id).ToListAsync();
         }
-        public async Task<IEnumerable<SpacePort>> GetSpacePortById(int id)
+        public async Task<SpacePort> GetSpacePortById(int id)
         {
-            return await _context.SpacePorts.Where(i => i.Id == id).Include(p => p.Parkings).ToListAsync();
+            return await _context.SpacePorts.Where(i => i.Id == id).Include(p => p.Parkings).FirstAsync();
         }
         public async Task<Task> UpdateSpacePort(int id, SpacePort spacePort)
         {
@@ -63,7 +63,7 @@ namespace SpaceApi.Data
                 return null;
             }
         }
-        public async Task<Task> DeleteParking(int id)
+        public async Task<Task> DeleteSpacePort(int id)
         {
             var spacePort = await _context.SpacePorts.FindAsync(id);
             
