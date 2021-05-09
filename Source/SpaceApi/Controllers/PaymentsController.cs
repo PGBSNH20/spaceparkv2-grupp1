@@ -21,7 +21,7 @@ namespace SpaceApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Payment>> PostPayment(Payment payment)
         {
-            var result = _paymentData.AddPayment(payment);
+            var result = await _paymentData.AddPayment(payment);
             
             if (result == null)
                 return BadRequest();

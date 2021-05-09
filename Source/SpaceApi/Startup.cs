@@ -33,7 +33,7 @@ namespace SpaceApi
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1", Description = "The best space park in space"}); });
             services.AddDbContext<SpaceContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpaceDatabase")));
             services.AddScoped<IParkingDataStore, ParkingDataStore>();
             services.AddScoped<IPaymentsDataStore, PaymentsDataStore>();
@@ -74,7 +74,8 @@ namespace SpaceApi
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            context.Database.Migrate();
+            if(context.Database.GetPendingMigrations() != null || context.Database.GetPendingMigrations().Count() >= 1)
+                context.Database.Migrate(); // We use this to automatically update the database schema when starting our docker containers.
 
         }
     }

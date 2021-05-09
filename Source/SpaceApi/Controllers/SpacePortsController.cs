@@ -29,11 +29,11 @@ namespace SpaceApi.Controllers
 
         // GET: api/SpacePorts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<SpacePort>>> GetSpacePort(int id)
+        public async Task<ActionResult<SpacePort>> GetSpacePort(int id)
         {
             var spacePort = await _spacePortData.GetSpacePortById(id);
 
-            if (spacePort.Count() == 0)
+            if (spacePort == null)
             {
                 return NotFound();
             }
@@ -46,7 +46,7 @@ namespace SpaceApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSpacePort(int id, SpacePort spacePort)
         {
-            var status = _spacePortData.UpdateSpacePort(id, spacePort);
+            var status = await _spacePortData.UpdateSpacePort(id, spacePort);
 
             if (status.Exception != null)
             {
@@ -65,7 +65,7 @@ namespace SpaceApi.Controllers
         [HttpPost]
         public async Task<ActionResult<SpacePort>> PostSpacePort(SpacePort spacePort)
         {
-            var result = _spacePortData.AddSpacePort(spacePort);
+            var result = await _spacePortData.AddSpacePort(spacePort);
             if (result == null)
                 return BadRequest();
             return CreatedAtAction("GetSpacePort", new { id = spacePort.Id }, spacePort);
@@ -76,7 +76,7 @@ namespace SpaceApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSpacePort(int id)
         {
-            var spacePort = _spacePortData.DeleteParking(id);
+            var spacePort = await _spacePortData.DeleteSpacePort(id);
             if (spacePort == null)
             {
                 return NotFound();

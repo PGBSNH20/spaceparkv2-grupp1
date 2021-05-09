@@ -79,7 +79,7 @@ namespace SpaceApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParking(int id)
         {
-            var parking = _parkingData.DeleteParking(id);
+            var parking = await _parkingData.DeleteParking(id);
             if (parking == null)
                 return NotFound();
 

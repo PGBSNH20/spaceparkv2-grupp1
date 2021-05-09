@@ -78,7 +78,7 @@ namespace SpaceApi.Data
         public async Task<Task> DeleteParking(int id)
         {
             var parking = await _context.Parkings.FindAsync(id);
-            
+
             if (parking == null)
                 return null;
 
@@ -92,14 +92,5 @@ namespace SpaceApi.Data
             return _context.Parkings.Any(e => e.Id == id);
         }
 
-    }
-
-    public interface IParkingDataStore
-    {
-        Task<List<Parking>> GetAllParkings(string portName);
-        Task<Parking> GetParkingById(int id);
-        Task<Task> UpdateParking(int id, Parking parking);
-        Task<Parking> AddParking(Parking parking);
-        Task<Task> DeleteParking(int id);
     }
 }
