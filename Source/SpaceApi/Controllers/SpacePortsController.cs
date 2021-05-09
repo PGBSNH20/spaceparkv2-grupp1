@@ -50,10 +50,13 @@ namespace SpaceApi.Controllers
 
             if (status.Exception != null)
             {
-                if (status.Exception.InnerException.Message == "Id does not match")
-                    return BadRequest();
-                if (status.Exception.InnerException.Message == "Not found")
-                    return NotFound();
+                switch (status.Exception.InnerException.Message)
+                {
+                    case "Id does not match":
+                        return BadRequest();
+                    case "Not found":
+                        return NotFound();
+                }
             }
             if (status.IsCompleted)
                 return Ok();
@@ -68,7 +71,7 @@ namespace SpaceApi.Controllers
             var result = await _spacePortData.AddSpacePort(spacePort);
             if (result == null)
                 return BadRequest();
-            return CreatedAtAction("GetSpacePort", new { id = spacePort.Id }, spacePort);
+            return CreatedAtAction("PostSpacePort", new { id = spacePort.Id }, spacePort);
         }
 
 

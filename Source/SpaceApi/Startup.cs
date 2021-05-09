@@ -56,26 +56,26 @@ namespace SpaceApi
 
             app.UseAuthorization();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    var key = Configuration["ApiKey"];
-            //    if (context.Request.Headers.ContainsKey("apikey") && context.Request.Headers["apikey"].ToString() == key)
-            //    {
-            //        await next();
-            //    }
-            //    else
-            //    {
-            //        context.Response.StatusCode = 401;
-            //        var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + context.Response.StatusCode  + "}";
-            //        context.Response.ContentType = "application/json";
-            //        await context.Response.WriteAsync(jsonString, Encoding.UTF8);
-            //    }
-            //});
+            app.Use(async (context, next) =>
+            {
+                var key = Configuration["ApiKey"];
+                if (context.Request.Headers.ContainsKey("apikey") && context.Request.Headers["apikey"].ToString() == key)
+                {
+                    await next();
+                }
+                else
+                {
+                    context.Response.StatusCode = 401;
+                    var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + context.Response.StatusCode + "}";
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(jsonString, Encoding.UTF8);
+                }
+            });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            if(context.Database.GetPendingMigrations() != null || context.Database.GetPendingMigrations().Count() >= 1)
-                context.Database.Migrate(); // We use this to automatically update the database schema when starting our docker containers.
+            if(context.Database.GetPendingMigrations() != null || context.Database.GetPendingMigrations().Any()) // We use this to automatically update the database schema when starting our docker containers.
+                context.Database.Migrate(); 
 
         }
     }

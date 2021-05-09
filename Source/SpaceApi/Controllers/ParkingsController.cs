@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SpaceApi.Data;
 using SpaceApi.Models;
 
@@ -51,13 +49,18 @@ namespace SpaceApi.Controllers
 
             if (status.Exception != null)
             {
-                if (status.Exception.InnerException.Message == "Id does not match")
-                    return BadRequest();
-                if (status.Exception.InnerException.Message == "Not found")
-                    return NotFound();
+                switch (status.Exception.InnerException.Message)
+                {
+                    case "Id does not match":
+                        return BadRequest();
+                    case "Not found":
+                        return NotFound();
+                }
             }
+
             if (status.IsCompleted)
                 return Ok();
+
             return NoContent();
         }
 

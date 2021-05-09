@@ -20,10 +20,7 @@ namespace SpaceApi.Controllers
          public List<Starship> GetAvailableStarships(string personName)
          {
             Results starWarsCharacter = PersonApi.GetCharacter(personName);
-            if (starWarsCharacter == null) return null;
-            List<Starship> starships = new List<Starship>();
-            starships = ShipApi.GetPersonsStarshipsAvailableForParking(starWarsCharacter, _context);
-            return starships;
+            return starWarsCharacter == null ? null : ShipApi.GetPersonsStarshipsAvailableForParking(starWarsCharacter, _context);
          }
         
     }

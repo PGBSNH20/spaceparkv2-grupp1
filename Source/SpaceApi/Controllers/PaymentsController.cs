@@ -22,11 +22,11 @@ namespace SpaceApi.Controllers
         public async Task<ActionResult<Payment>> PostPayment(Payment payment)
         {
             var result = await _paymentData.AddPayment(payment);
-            
+
             if (result == null)
                 return BadRequest();
 
-            return CreatedAtAction("GetPayment", new { id = payment.Id }, payment);
+            return CreatedAtAction("PostPayment", new { id = payment.Id }, payment);
         }
         // GET: api/Payments?personName=R2-D2
         [HttpGet]

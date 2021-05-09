@@ -11,15 +11,11 @@ namespace Logic
         {
             Console.Clear();
             Console.WriteLine("Using swish to pay...");
-            
-            Payment pay = new Payment();
-            pay.Amount = parking.Fee;
-            pay.User = parking.ParkedBy;
-            pay.PayDate = DateTime.Now;
 
+            Payment pay = new Payment {Amount = parking.Fee, User = parking.ParkedBy, PayDate = DateTime.Now};
             var spaceApi = new SpaceParkApi();
             spaceApi.AddPay(pay);
-            
+
             Console.WriteLine("Payment successful");
             Console.WriteLine($"Payment By: {pay.User}. Amount: {pay.Amount} credits. Payment Date: {pay.PayDate}");
             Console.ReadKey();
@@ -48,7 +44,7 @@ namespace Logic
             {
                 StandardMessages.NotAllowedMessage();
             }
-                Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }
