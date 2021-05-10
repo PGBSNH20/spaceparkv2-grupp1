@@ -1,0 +1,103 @@
+//--------------------------------------------------------------
+// ----------------SpaceShips-----------------------------------
+//--------------------------------------------------------------
+GET  https://localhost:443/api/spaceships?personname=Luke Skywalker
+apikey: secret1234
+###
+GET  https://localhost:443/api/spaceships?personname=Luke
+apikey: secret1234
+// Code 204 no content - if the person have not been a part of a Starwars movie 
+###
+GET  https://localhost:443/api/spaceships?personname=R2-D2
+apikey: secret1234
+// Code 200 and empty list - if there are no ships that are available for parking
+
+
+//--------------------------------------------------------------
+// ----------------Parkings-------------------------------------
+//--------------------------------------------------------------
+
+###
+GET https://localhost:443/api/parkings
+apikey: secret1234
+###
+GET https://localhost:443/api/parkings/2
+apikey: secret1234
+###
+PUT https://localhost:443/api/parkings/2
+Content-Type: application/json
+apikey: secret1234
+
+{
+  "id": 2,
+  "spacePortId": 1,
+  "fee": 50,
+  "maxLength": 200.00,
+  "occupied": true,
+  "parkedBy": "Luke Skywalker",
+  "shipName": "X-wing"
+}
+###
+POST https://localhost:443/api/parkings
+Content-Type: application/json
+apikey: secret1234
+
+{
+    "spacePortId": 1,
+    "fee": 10,
+    "maxLength": 100,
+    "occupied": false
+}
+###
+DELETE https://localhost:443/api/parkings/1
+apikey: secret1234
+
+//--------------------------------------------------------------
+// ----------------Spaceports-----------------------------------
+//--------------------------------------------------------------
+###
+GET https://localhost:443/api/spaceports
+apikey: secret1234
+###
+GET https://localhost:443/api/spaceports/2
+apikey: secret1234
+###
+PUT https://localhost:443/api/spaceports/2
+Content-Type: application/json
+apikey: secret1234
+
+{
+    "id": 2,
+    "portName": "new name",
+    "parkings": null
+}
+###
+POST https://localhost:443/api/spaceports
+Content-Type: application/json
+apikey: secret1234
+
+{
+    "portName": "new name",
+    "parkings": null
+}
+###
+DELETE https://localhost:443/api/spaceports/2
+apikey: secret1234
+
+//--------------------------------------------------------------
+// ----------------Payments-----------------------------------
+//--------------------------------------------------------------
+###
+GET https://localhost:443/api/payments?personname=Luke Skywalker
+apikey: secret1234
+###
+POST https://localhost:443/api/payments
+Content-Type: application/json
+apikey: secret1234
+
+{
+    "amount": 500,
+    "user": "Luke Skywalker",
+    "payDate": "2021-05-06T21:32:36.9789158"
+}
+
