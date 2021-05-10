@@ -35,15 +35,9 @@ namespace SpaceApi.Data
         }
         public async Task<Parking> GetParkingById(int id)
         {
-            var parking = await _context.Parkings.FindAsync(id);
-
-            if (parking == null)
-            {
-                return null;
-            }
-            return parking;
+            return await _context.Parkings.FindAsync(id);
         }
-        public async Task<Task> UpdateParking(int id, Parking parking)
+        public async Task<Task> UpdateParking(int id, Parking parking) // return argument exceptions to tell the controller what to do
         {
             if (id != parking.Id)
             {

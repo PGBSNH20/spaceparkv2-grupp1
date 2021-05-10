@@ -1,16 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SpaceApi.Models;
 using System.Text;
@@ -31,7 +25,6 @@ namespace SpaceApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpaceApi", Version = "v1", Description = "The best space park in space"}); });
             services.AddDbContext<SpaceContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpaceDatabase")));
@@ -58,13 +51,13 @@ namespace SpaceApi
 
             app.Use(async (httpContext, next) =>
             {
-                var key = Configuration["ApiKey"];
+                var key = Configuration["ApiKey"]; // Get very secret api key from appsettings
                 
-                if (httpContext.Request.Headers["apikey"] == key)
+                if (httpContext.Request.Headers["apikey"] == key) // Check if request headers contains the key value
                 {
                     await next();
                 }
-                else
+                else // Return 401 message if not
                 {
                     httpContext.Response.StatusCode = 401;
                     var jsonString = "{\"Message\": \"API key was not provided\",\"Response\": " + httpContext.Response.StatusCode + "}";
