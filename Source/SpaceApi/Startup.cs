@@ -59,7 +59,8 @@ namespace SpaceApi
             app.Use(async (httpContext, next) =>
             {
                 var key = Configuration["ApiKey"];
-                if (httpContext.Request.Headers.ContainsKey("apikey") && httpContext.Request.Headers["apikey"].ToString() == key)
+                
+                if (httpContext.Request.Headers["apikey"] == key)
                 {
                     await next();
                 }

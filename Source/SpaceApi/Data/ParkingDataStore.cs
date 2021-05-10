@@ -21,10 +21,17 @@ namespace SpaceApi.Data
         {
             if (portName != null)
             {
-                return await _context.SpacePorts.Where(p => p.PortName == portName).Include(i => i.Parkings)
-                        .SelectMany(t => t.Parkings).ToListAsync();
+                var correctedName = portName.Trim('"', ' '); // Check name for trailing characters
+
+                if (_context.SpacePorts.Any(p => p.PortName == correctedName))
+                {
+                    var spacePort = _context.SpacePorts.First(p => p.PortName == correctedName).Id;
+                    return await _context.Parkings.Where(p => p.SpacePortId == spacePort).ToListAsync();
+                }
+
+                return new List<Parking>(); // Return empty list if nothing is found
             }
-            return await _context.Parkings.ToListAsync();
+            return await _context.Parkings.ToListAsync(); // If no name is given return all
         }
         public async Task<Parking> GetParkingById(int id)
         {

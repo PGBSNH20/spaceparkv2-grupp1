@@ -12,7 +12,7 @@ namespace Logic
             Console.Clear();
             Console.WriteLine("Using swish to pay...");
 
-            Payment pay = new Payment {Amount = parking.Fee, User = parking.ParkedBy, PayDate = DateTime.Now};
+            Payment pay = new Payment {Amount = parking.Fee, User = parking.ParkedBy, PayDate = DateTime.UtcNow};
             var spaceApi = new SpaceParkApi();
             spaceApi.AddPay(pay);
 

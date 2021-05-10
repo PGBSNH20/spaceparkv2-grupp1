@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SpaceApi.Data;
@@ -21,7 +22,8 @@ namespace SpaceApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Parking>>> GetParkings(string portName)
         {
-            var list = await _parkingData.GetAllParkings(portName);
+            var s = portName;
+            var list = await _parkingData.GetAllParkings(s);
             if (list.Count == 0)
                 return NotFound();
             return Ok(list);
